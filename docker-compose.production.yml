@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  # CARP API FLASK
+  carp-client-api-flask:
+    # Container name
+    container_name: carp-api-flask
+    # Always restart the service
+    restart: always
+    # Build the carp flask service using the Dockerfile
+    build: ./
+    # Environment variables
+    environment:
+      - APP_NAME=carp-api-flask
+    network_mode: host
+    ports:
+    - 8091:8091

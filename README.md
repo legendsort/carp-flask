@@ -1,4 +1,4 @@
-# CARP IPDM-GO REPORT
+# CARP CLIENT API FLASK
 
 ![CACHET](cachet.png)
 
@@ -6,6 +6,11 @@
 The Copenhagen Center for Health Technology (CACHET) Research Platform (CARP) enables researchers to run mobile health (mHealth) studies where data is collected on participant's smartphones and wearable devices. Data is securely uploaded and managed in a hosting infrastructure managed by the Technical University of Denmark.
 
 CARP is a platform for running research studies in the health domain – also known as Digital Phenotyping. Such studies range from technical feasibility studies of novel technology to large-scale clinical studies. The platform is very versatile both in terms of support for different types of health domains, as well as in terms of technical support and configuration.
+
+Info 
+-----------------
+This is a sample project that provides all existing endpoints to communicate with the [CARP Webservices API](https://carp.cachet.dk) platform using the [Flask Framework](https://flask.palletsprojects.com/en/2.0.x/).
+
 
 Environments 
 -----------------
@@ -36,6 +41,7 @@ Install requirements
 Dependencies
 -----------------
 - [CARP PYTHON API](https://pypi.org/project/carp-python-api)
+- [Flask Framework](https://flask.palletsprojects.com/en/2.0.x/)
          
 References
 -----------------

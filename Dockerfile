@@ -5,7 +5,7 @@ MAINTAINER Alban Maxhuni, PhD <almax@dtu.dk>
 WORKDIR /carp_flask
 
 # Copy the current directory contents into the container at /ipdmgo
-ADD . /ipdmgo
+ADD . /carp_flask
 
 # Install the dependencies
 COPY ./requirements.txt /carp_flask/requirements.txt

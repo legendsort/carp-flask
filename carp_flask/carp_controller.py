@@ -61,7 +61,6 @@ def login():
     Endpoint: [login]
     :return: The login tokens.
     """
-    print(request.form.get('username'))
     auth_response = account.login(BASE_URL["production"], request)
     return Response(json.dumps(auth_response), mimetype='application/json')
 

@@ -12,8 +12,8 @@ from setuptools import setup
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-requirements = ['setuptools', 'requests', 'carp', 'pandas', 'urllib3', 'utils', 'numpy', 'argparse',
-                'wheel', 'Jinja2', 'Werkzeug', 'matplotlib', 'seaborn', 'pip', 'tqdm', 'twine']
+with open("README.md", "r", encoding="utf-8") as fh:
+    requirements_list = fh.read()
 
 setup(
     name='carp-python-api',
@@ -26,11 +26,11 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    install_requires=requirements,
+    install_requires=requirements_list,
     keywords='carp-python-api',
     url='https://cachet.dk',
     project_urls={
-        "CARP Client API - Library": "https://github.com/cph-cachet/carp.python-client-api",
+        "CARP Client API - Flask": "https://github.com/cph-cachet/carp.python-client-api",
     },
     classifiers=[
         "Programming Language :: Python :: 3",

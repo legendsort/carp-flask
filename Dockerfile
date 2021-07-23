@@ -14,6 +14,7 @@ RUN pip3 install -r requirements.txt
 # Uwsgi
 RUN pip3 install uwsgi
 RUN pip3 install uwsgi-tools
+RUN pip3 install carp-python-api-async
 
 RUN apt-get update
 

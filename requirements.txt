@@ -27,4 +27,4 @@ psutil~=5.8.0
 blinker~=1.4
 slack_sdk==3.8.0
 # CARP API
-carp-python-api==1.0.3
+carp-python-api~=1.0.6

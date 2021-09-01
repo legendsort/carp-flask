@@ -53,7 +53,7 @@
 								},
 								{
 									"key": "username",
-									"value": "admin@cachet.dk",
+									"value": "[username@cachet.dk]",
 									"type": "text"
 								},
 								{
@@ -117,7 +117,7 @@
 										},
 										{
 											"key": "username",
-											"value": "[username]@dtu.dk",
+											"value": "[username@cachet.dk]",
 											"type": "text"
 										},
 										{
@@ -151,11 +151,13 @@
 										},
 										{
 											"key": "username",
-											"value": "[username]"
+											"value": "[username@cachet.dk]",
+											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "[password]"
+											"value": "[password]",
+											"type": "text"
 										}
 									]
 								}
@@ -974,14 +976,14 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
-									"key": "password",
-									"value": "Cachet20Sys21Admin",
-									"type": "string"
+									"key": "username",
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
-									"key": "username",
-									"value": "sysadmin@cachet.dk",
-									"type": "string"
+									"key": "password",
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "accessTokenUrl",
@@ -1000,12 +1002,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -1203,13 +1205,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "sys1admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -1218,12 +1220,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -1907,13 +1909,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "sys1admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -1922,12 +1924,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -2523,19 +2525,14 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
-									"key": "password",
-									"value": "admin",
-									"type": "string"
-								},
-								{
 									"key": "username",
-									"value": "admin@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
-									"key": "accessTokenUrl",
-									"value": "{{INSTANCE_URI}}/oauth/token",
-									"type": "string"
+									"key": "password",
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "challengeAlgorithm",
@@ -2549,12 +2546,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -3288,13 +3285,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "sys1admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -3303,12 +3300,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -4582,14 +4579,14 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
-									"key": "password",
-									"value": "admin",
-									"type": "string"
+									"key": "username",
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
-									"key": "username",
-									"value": "admin@cachet.dk",
-									"type": "string"
+									"key": "password",
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "accessTokenUrl",
@@ -4608,12 +4605,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -6623,14 +6620,14 @@
 							"type": "oauth2",
 							"oauth2": [
 								{
-									"key": "password",
-									"value": "admin",
-									"type": "string"
+									"key": "username",
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
-									"key": "username",
-									"value": "admin@cachet.dk",
-									"type": "string"
+									"key": "password",
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "accessTokenUrl",
@@ -6649,12 +6646,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -10542,13 +10539,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "CaChet1Sys1Admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -10557,12 +10554,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -10621,13 +10618,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "CaChet1Sys1Admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -10636,12 +10633,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -10695,13 +10692,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "CaChet1Sys1Admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -10710,12 +10707,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{
@@ -10770,13 +10767,13 @@
 								},
 								{
 									"key": "username",
-									"value": "sys1admin1DK@cachet.dk",
-									"type": "string"
+									"value": "[username@cachet.dk]",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "CaChet1Sys1Admin1DK",
-									"type": "string"
+									"value": "[password]",
+									"type": "text"
 								},
 								{
 									"key": "grant_type",
@@ -10785,12 +10782,12 @@
 								},
 								{
 									"key": "clientSecret",
-									"value": "carp",
+									"value": "[client_secret]",
 									"type": "string"
 								},
 								{
 									"key": "clientId",
-									"value": "carp",
+									"value": "[client_id]",
 									"type": "string"
 								},
 								{

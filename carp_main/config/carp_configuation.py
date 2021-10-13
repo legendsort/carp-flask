@@ -7,12 +7,17 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED ”AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
+from typing import List
+from starlette.config import Config
+from starlette.datastructures import CommaSeparatedStrings
 
-from carp_main import app
+VERSION = "1.0.0"
+config = Config(".environments")
+DEBUG: bool = config("DEBUG", cast=bool, default=True)
+PROJECT_NAME: str = config("PROJECT_NAME", default="CARP Client - Flask")
 
-if __name__ == '__main__':
-    app.run(
-        host='127.0.0.1',
-        port=8091,
-        debug=True
-    )
+ALLOWED_HOSTS: List[str] = config(
+    "ALLOWED_HOSTS",
+    cast=CommaSeparatedStrings,
+    default="",
+)

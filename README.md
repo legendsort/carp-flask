@@ -16,12 +16,8 @@ Environments
 -----------------
 
 > Changing the **[CARP]** environment: 
-> Switch `url` function (`carp_controller.py`) as follows:
->  -  *BASE_URL["production"]..* 
->  -  *BASE_URL["staging"]..**  
->  -  *BASE_URL["development"]..* 
->  -  *BASE_URL["test"]..*
->  -  *BASE_URL["local"]..*
+>  - replace the environment in the following file: `.environments`
+>  - i.e.: ENVIRONMENT=production, ENVIRONMENT=development, ENVIRONMENT=staging, ENVIRONMENT=test, ENVIRONMENT=local, `default`=local
 
 
 Install requirements
@@ -29,13 +25,13 @@ Install requirements
 
 **Provision for Production:** 
  >  - ~`cd` into `carp.client-api-flask` directory and use the bash-command: 
- > - bash deployment.sh production up
+ > - `bash deployment.sh production up`
  > - Done :)
 
 
 **Run locally:**
 >  - ~`cd` into `carp.client-api-flask` directory and use the python-command: 
-> - python run.py
+> - `python run.py`
 >  - Done :)
 
 Dependencies

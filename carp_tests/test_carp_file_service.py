@@ -14,12 +14,8 @@ import requests
 from carp_main.resources import carp_environment as env
 from carp_tests.test_carp_auth_service import environment
 from carp_tests.test_carp_auth_service import header_access_token
-from carp_tests.test_carp_collection_service import collection_study_id
+from carp_tests.test_carp_setup import file_study_id, file_id, file_query
 
-# File
-file_study_id: str = collection_study_id
-file_id = '1'
-file_query: str = '?query=created_by_user_id==1'
 
 """
 NOTE: To enable testing, add the prefix "test_" before the method (e.g. def test_upload_file(self):).
@@ -37,38 +33,38 @@ class FileTestCase(unittest.TestCase):
             ('file', ('build.txt', open('carp_tests/build.txt', 'rb'), 'text/plain'))
         ]
         response = requests.request("POST", url, headers=header_access_token, data=payload, files=files)
-        print(f'FILE >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'FILE >> URL: {url}, method: upload_file(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_one_file(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", file_study_id, "/files"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'FILE >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'FILE >> URL: {url}, method: get_one_file(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_files_by_study_id(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", file_study_id, "/files/", file_id])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'FILE >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'FILE >> URL: {url}, method: get_all_files_by_study_id(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_with_query(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", file_study_id, "/files", file_query])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'FILE >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'FILE >> URL: {url}, method: get_all_with_query(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def download_file(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", file_study_id, "/files/", file_id, "/download"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'FILE >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'FILE >> URL: {url}, method: download_file(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def delete_file(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", file_study_id, "/files/", file_id])
         response = requests.request("DELETE", url, headers=header_access_token, data=payload)
-        print(f'FILE >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'FILE >> URL: {url}, method: delete_file(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
 

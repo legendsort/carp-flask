@@ -14,12 +14,7 @@ import requests
 
 from carp_main.resources import carp_environment as env
 from carp_tests.test_carp_auth_service import environment
-from carp_tests.test_carp_auth_service import header_access_token
-from carp_tests.test_carp_deployment_service import deployment_id
-
-# Consent Document
-consent_deployment_id: str = deployment_id
-consent_id = '1'
+from carp_tests.test_carp_setup import consent_id, deployment_id, account_header_access_token as header_access_token
 
 """
 NOTE: To enable testing, add the prefix "test_" before the method (e.g. def test_create_consent_document(self):).
@@ -31,31 +26,31 @@ class ConsentDocumentTestCase(unittest.TestCase):
     CONSENT_DOCUMENTS ENDPOINTS - UNITTESTS
     """
     def create_consent_document(self):
-        url = ''.join([env.BASE_URL[environment], "/client/api/deployments/", consent_deployment_id, "/consent-documents"])
+        url = ''.join([env.BASE_URL[environment], "/client/api/deployments/", deployment_id, "/consent-documents"])
         payload = json.dumps({"text": "The original terms text.", "signature": "Image Blob"})
         response = requests.request("POST", url, headers=headers, data=payload)
-        print(f'Consent Document URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'Consent Document URL: {url}, method: create_consent_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_one_consent_document(self):
         url = ''.join(
-            [env.BASE_URL[environment], "/client/api/deployments/", consent_deployment_id, "/consent-documents/", consent_id])
+            [env.BASE_URL[environment], "/client/api/deployments/", deployment_id, "/consent-documents/", consent_id])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'Consent Document URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'Consent Document URL: {url}, method: get_one_consent_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_consent_documents(self):
         url = ''.join(
-            [env.BASE_URL[environment], "/client/api/deployments/", consent_deployment_id, "/consent-documents"])
+            [env.BASE_URL[environment], "/client/api/deployments/", deployment_id, "/consent-documents"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'Consent Document URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'Consent Document URL: {url}, method: get_all_consent_documents(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def delete_consent_document(self):
         url = ''.join(
-            [env.BASE_URL[environment], "/client/api/deployments/", consent_deployment_id, "/consent-documents/", consent_id])
+            [env.BASE_URL[environment], "/client/api/deployments/", deployment_id, "/consent-documents/", consent_id])
         response = requests.request("DELETE", url, headers=header_access_tokenx, data={})
-        print(f'Consent Document URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'Consent Document URL: {url}, method: delete_consent_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
 

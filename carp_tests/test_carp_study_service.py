@@ -10,21 +10,12 @@ THE SOFTWARE IS PROVIDED ”AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 import unittest
 import requests
+from json import dumps
 
 from carp_main.resources import carp_environment as env
 from carp_tests.test_carp_auth_service import environment
 from carp_tests.test_carp_auth_service import header_access_token
-from carp_tests.test_carp_auth_service import account_id
-from carp_tests.test_carp_deployment_service import owner_id
-
-# Study
-account_id: str = account_id
-study_id: str = 'xxx'
-owner_id: str = owner_id
-is_master_device: str = 'true'
-participant_email: str = 'xxx@cachet.dk'
-participant_id: str = 'xxx'
-group_id: str = 'xxx'
+from carp_tests.test_carp_setup import invited_researcher_email, study_id, participant_email, participant_id, group_id, deployment_owner_id as owner_id
 
 
 class StudyTestCase(unittest.TestCase):
@@ -33,9 +24,23 @@ class StudyTestCase(unittest.TestCase):
     """
     def test_add_researcher(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", study_id, "/researchers"])
-        payload = {"researcherAccountId": account_id}
+        payload = dumps({
+            "email": invited_researcher_email
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: add_researcher(), status code: {response.status_code}, and the response body: {response.text}')
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_researchers(self):
+        url = ''.join([env.BASE_URL[environment], "/client/api/studies/", study_id, "/researchers"])
+        response = requests.request("GET", url, headers=header_access_token, data={})
+        print(f'STUDY >> URL: {url}, method: get_researchers(), status code: {response.status_code}, and the response body: {response.text}')
+        self.assertEqual(response.status_code, 200)
+
+    def delete_researchers(self):
+        url = ''.join([env.BASE_URL[environment], "/client/api/studies/", study_id, "/researchers?email=", researcher_email])
+        response = requests.request("GET", url, headers=header_access_token, data=payload)
+        print(f'STUDY >> URL: {url}, method: delete_researchers(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     """
@@ -43,23 +48,27 @@ class StudyTestCase(unittest.TestCase):
     """
     def test_get_study_details(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {"$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GetStudyDetails",
-                   "studyId": study_id}
+        payload = dumps({
+            "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GetStudyDetails",
+            "studyId": study_id
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: get_study_details(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_study_overview(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {"$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GetStudiesOverview",
-                   "owner": {"id": owner_id}}
+        payload = dumps({
+            "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GetStudiesOverview",
+            "owner": {"id": owner_id}
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: get_study_overview(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_set_study_protocol(self):
+    def set_study_protocol(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {{
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.SetProtocol",
             "studyId": study_id,
             "protocol": {
@@ -70,7 +79,7 @@ class StudyTestCase(unittest.TestCase):
                 "masterDevices": [
                     {
                         "$type": "dk.cachet.carp.protocols.domain.devices.Smartphone",
-                        "isMasterDevice": is_master_device,
+                        "isMasterDevice": true,
                         "roleName": "phone",
                         "samplingConfiguration": {},
                         "supportedDataTypes": [
@@ -115,36 +124,36 @@ class StudyTestCase(unittest.TestCase):
                     }
                 ]
             }
-        }}
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: set_study_protocol(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_go_live(self):
+    def go_live(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {
-            "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GoLive",
-            "studyId": study_id
-        }
+        payload = dumps({
+           "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GoLive",
+           "studyId": study_id
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: go_live(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_set_internal_description(self):
+    def set_internal_description(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {
-            "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.SetInternalDescription",
-            "studyId": study_id,
-            "name": "name",
-            "description": "New description"
-        }
+        payload = dumps({
+           "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.SetInternalDescription",
+           "studyId": study_id,
+           "name": "name",
+           "description": "New description"
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: set_internal_description(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_create_study(self):
+    def create_study(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.CreateStudy",
             "owner": {
                 "id": owner_id
@@ -156,14 +165,14 @@ class StudyTestCase(unittest.TestCase):
                 "description": "",
                 "applicationData": ""
             }
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: create_study(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_set_invitation(self):
+    def set_invitation(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.SetInvitation",
             "studyId": study_id,
             "invitation": {
@@ -171,19 +180,19 @@ class StudyTestCase(unittest.TestCase):
                 "description": "New Description",
                 "applicationData": ""
             }
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: set_invitation(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_study_status(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/study-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.StudyServiceRequest.GetStudyStatus",
             "studyId": study_id
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url},  method: get_study_status(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     """
@@ -191,39 +200,39 @@ class StudyTestCase(unittest.TestCase):
     """
     def test_add_participant(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.AddParticipant",
             "studyId": study_id,
             "email": participant_email
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: add_participant(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_participant(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.GetParticipant",
             "studyId": study_id,
             "participantId": participant_id
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: get_participant(),  status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_participants(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.GetParticipants",
             "studyId": study_id
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: get_participants(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_deploy_participant_group(self):
+    def deploy_participant_group(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.DeployParticipantGroup",
             "studyId": study_id,
             "group": [
@@ -234,35 +243,35 @@ class StudyTestCase(unittest.TestCase):
                     ]
                 }
             ]
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: deploy_participant_group(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_participant_group_status_list(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.GetParticipantGroupStatusList",
             "studyId": study_id
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: get_participant_group_status_list(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_stop_participant_group(self):
+    def stop_participant_group(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.StopParticipantGroup",
             "studyId": study_id,
             "groupId": group_id
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: stop_participant_group(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def test_set_particapnt_group_data(self):
+    def set_participant_group_data(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/participant-service"])
-        payload = {
+        payload = dumps({
             "$type": "dk.cachet.carp.studies.infrastructure.ParticipantServiceRequest.SetParticipantGroupData",
             "studyId": study_id,
             "groupId": group_id,
@@ -271,9 +280,9 @@ class StudyTestCase(unittest.TestCase):
                 "$type": "dk.cachet.carp.input.sex",
                 "value": "Male"
             }
-        }
+        }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'STUDY >> URL: {url}, method: set_participant_group_data(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     """
@@ -281,8 +290,8 @@ class StudyTestCase(unittest.TestCase):
     """
     def test_get_participant_info(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", study_id, "/participants"])
-        response = requests.request("POST", url, headers=header_access_token, data={})
-        print(f'STUDY >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        response = requests.request("GET", url, headers=header_access_token, data={})
+        print(f'STUDY >> URL: {url}, method: get_participant_info(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
 

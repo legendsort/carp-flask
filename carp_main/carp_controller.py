@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED ”AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 """
 
 import json
+from json import dumps
 
 from carp import account_service as account
 from carp import collection_service as collection
@@ -31,7 +32,6 @@ from starlette.config import Config
 config = Config(".environments")
 environment: str = config("ENVIRONMENT", default="local")
 
-
 """""""""""""""
     MAIN
 """""""""""""""
@@ -53,9 +53,8 @@ def login():
     Endpoint: [login]
     :return: The login tokens.
     """
-    print(request)
-    auth_response = account.login(env.BASE_URL[environment], request)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    auth_response = dumps(account.login(env.BASE_URL[environment], request)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/oauth/refresh/token', methods=['POST'])
@@ -64,8 +63,8 @@ def refresh_token():
     Endpoint: [login_refresh_token]
     :return: The refresh token.
     """
-    auth_response = account.refresh_token(env.BASE_URL[environment], request)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    auth_response = dumps(account.refresh_token(env.BASE_URL[environment], request)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/users/current', methods=['GET'])
@@ -74,9 +73,9 @@ def get_current_user():
     Endpoint: [get_current_user]
     :return: The current user account information.
     """
-    auth_response = account.current_user(env.BASE_URL[environment],
-                                         access_token=request.headers['Authorization'])
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    auth_response = dumps(account.current_user(env.BASE_URL[environment],
+                                               access_token=request.headers['Authorization'])).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/users/register', methods=['POST'])
@@ -85,11 +84,11 @@ def register_user():
     Endpoint: [register_user]
     :return: The registered user.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    auth_response = account.register_user(env.BASE_URL[environment],
-                                          access_token=request.headers['Authorization'],
-                                          user_body=request_body)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
+    auth_response = dumps(account.register_user(env.BASE_URL[environment],
+                                                access_token=request.headers['Authorization'],
+                                                user_body=request_body)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/accounts/<role>', methods=['POST'])
@@ -100,11 +99,11 @@ def invite_account(role=None):
         i.e. roles: PARTICIPANT, STUDY_OWNER
     :return: This request doesn't return a response body.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    auth_response = account.invite_user(env.BASE_URL[environment],
-                                        access_token=request.headers['Authorization'],
-                                        email_address=request_body, role=role)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
+    auth_response = dumps(account.invite_user(env.BASE_URL[environment],
+                                              access_token=request.headers['Authorization'],
+                                              email_address=request_body, role=role)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/users/forgotten-password/send', methods=['POST'])
@@ -113,11 +112,11 @@ def send_forgotten_password_email():
     Endpoint: [send_forgotten_password_email]
     :return: This request doesn't return a response request_body.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    auth_response = account.send_forgotten_password(env.BASE_URL[environment],
-                                                    access_token=request.headers['Authorization'],
-                                                    password_body=request_body)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
+    auth_response = dumps(account.send_forgotten_password(env.BASE_URL[environment],
+                                                          access_token=request.headers['Authorization'],
+                                                          password_body=request_body)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/users/forgotten-password/save', methods=['POST'])
@@ -126,11 +125,11 @@ def send_new_password_for_token():
     Endpoint: [send_new_password_for_token]
     :return: This request doesn't return a response request_body.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    auth_response = account.send_new_password_for_token(env.BASE_URL[environment],
-                                                        access_token=request.headers['Authorization'],
-                                                        password_body=request_body)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
+    auth_response = dumps(account.send_new_password_for_token(env.BASE_URL[environment],
+                                                              access_token=request.headers['Authorization'],
+                                                              password_body=request_body)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/accounts/unlock', methods=['POST'])
@@ -139,11 +138,11 @@ def unlock_account():
     Endpoint: [unlock_account]
     :return: This request doesn't return a response request_body.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    auth_response = account.unlock_account(env.BASE_URL[environment],
-                                           access_token=request.headers['Authorization'],
-                                           email_body=request_body)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
+    auth_response = dumps(account.unlock_account(env.BASE_URL[environment],
+                                                 access_token=request.headers['Authorization'],
+                                                 email_body=request_body)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/users/password', methods=['PUT'])
@@ -152,11 +151,11 @@ def change_password():
     Endpoint: [change_password]
     :return: This request doesn't return a response request_body.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    auth_response = account.change_password(env.BASE_URL[environment],
-                                            access_token=request.headers['Authorization'],
-                                            password_body=request_body)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
+    auth_response = dumps(account.change_password(env.BASE_URL[environment],
+                                                  access_token=request.headers['Authorization'],
+                                                  password_body=request_body)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 @app.route('/client/api/accounts/<account_id>/study-manager', methods=['GET'])
@@ -166,10 +165,10 @@ def get_studies_for_researcher_accounts(account_id):
     @param: The existing [account_id] of the researcher.
     :return: This request doesn't return a response request_body.
     """
-    auth_response = account.get_studies_for_researcher(env.BASE_URL[environment],
-                                                       access_token=request.headers['Authorization'],
-                                                       account_id=account_id)
-    return Response(json.dumps(auth_response), mimetype='application/json')
+    auth_response = dumps(account.get_studies_for_researcher(env.BASE_URL[environment],
+                                                             access_token=request.headers['Authorization'],
+                                                             account_id=account_id)).encode("utf-8")
+    return Response(auth_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -184,12 +183,12 @@ def create_data_point(deployment_id):
     :param deployment_id: The [deployment_id] assigned in the deployment.
     :return: The new create data point by its [deployment_id].
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     datapoint_response = data_point.create_data_point(env.BASE_URL[environment],
                                                       access_token=request.headers['Authorization'],
                                                       deployment_id=deployment_id,
                                                       data_points_body=request_body)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/<data_point_id>', methods=['GET'])
@@ -204,7 +203,7 @@ def get_one_data_point(deployment_id, data_point_id):
                                                    access_token=request.headers['Authorization'],
                                                    deployment_id=deployment_id,
                                                    data_point_id=data_point_id)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points', methods=['GET'])
@@ -217,7 +216,7 @@ def get_all_data_points(deployment_id):
     datapoint_response = data_point.get_all_data_points(env.BASE_URL[environment],
                                                         access_token=request.headers['Authorization'],
                                                         deployment_id=deployment_id)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/page/<page_number>', methods=['GET'])
@@ -232,7 +231,7 @@ def get_all_data_points_pageable(deployment_id, page_number):
                                                                  access_token=request.headers['Authorization'],
                                                                  deployment_id=deployment_id,
                                                                  page=page_number)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/sort/<sort>', methods=['GET'])
@@ -247,7 +246,7 @@ def get_all_data_points_sorted(deployment_id, sort):
                                                                access_token=request.headers['Authorization'],
                                                                deployment_id=deployment_id,
                                                                sort=sort)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/query/<query>', methods=['GET'])
@@ -262,7 +261,7 @@ def get_all_data_points_with_query(deployment_id, query):
                                                          access_token=request.headers['Authorization'],
                                                          deployment_id=deployment_id,
                                                          query=query)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/batch', methods=['POST'])
@@ -277,7 +276,7 @@ def create_many_data_points(deployment_id):
                                                             access_token=request.headers['Authorization'],
                                                             deployment_id=deployment_id,
                                                             data_points_body=request_body)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/<data_point_id>', methods=['DELETE'])
@@ -292,7 +291,7 @@ def delete_data_point(deployment_id, data_point_id):
                                                                access_token=request.headers['Authorization'],
                                                                deployment_id=deployment_id,
                                                                data_point_id=data_point_id)
-    return Response(json.dumps(deleted_data_point_response), mimetype='application/json')
+    return Response(dumps(deleted_data_point_response), mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/data-points/count/query/<query_param>', methods=['GET'])
@@ -307,7 +306,7 @@ def get_count_of_data_points(deployment_id, query_param):
                                                           access_token=request.headers['Authorization'],
                                                           deployment_id=deployment_id,
                                                           query=query_param)
-    return Response(json.dumps(datapoint_response), mimetype='application/json')
+    return Response(dumps(datapoint_response), mimetype='application/json')
 
 
 """""""""""""""
@@ -330,7 +329,7 @@ def create_collection(study_id, collection_name, document_name):
                                                         study_id=study_id, collection_name=collection_name,
                                                         document_name=document_name,
                                                         collections_body=collection_body)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/collections/<collection_name>/<document_name>', methods=['GET'])
@@ -343,11 +342,12 @@ def get_collection_by_collection_name_and_document_name(study_id, collection_nam
     :return: The collection by its [study_id], [collection_name], [document_name].
     """
     collection_response = collection.get_collection_by_collection_name_and_document_name(env.BASE_URL[environment],
-                                                                                         access_token=request.headers['Authorization'],
+                                                                                         access_token=request.headers[
+                                                                                             'Authorization'],
                                                                                          study_id=study_id,
                                                                                          collection_name=collection_name,
                                                                                          document_name=document_name)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/collections/<collection_name>', methods=['GET'])
@@ -359,10 +359,11 @@ def get_collection_by_study_id_and_collection_name(study_id, collection_name):
     :return: The collection by its [study_id] and [collection_name].
     """
     collection_response = collection.get_collection_by_study_id_and_collection_name(env.BASE_URL[environment],
-                                                                                    access_token=request.headers['Authorization'],
+                                                                                    access_token=request.headers[
+                                                                                        'Authorization'],
                                                                                     study_id=study_id,
                                                                                     collection_name=collection_name)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/collections?query=<query>', methods=['GET'])
@@ -377,7 +378,7 @@ def get_collection_nested_query(study_id, query):
                                                                       access_token=request.headers['Authorization'],
                                                                       study_id=study_id,
                                                                       query=query)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/collections/id/<collection_id>', methods=['GET'])
@@ -389,10 +390,11 @@ def get_collection_by_study_id_and_collection_id(study_id, collection_id):
     :return: The collection by its [study_id] and [collection_id].
     """
     collection_response = collection.get_collection_by_study_id_and_collection_id(env.BASE_URL[environment],
-                                                                                  access_token=request.headers['Authorization'],
+                                                                                  access_token=request.headers[
+                                                                                      'Authorization'],
                                                                                   study_id=study_id,
                                                                                   collection_id=collection_id)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/collections/id/<collection_id>', methods=['PUT'])
@@ -409,7 +411,7 @@ def update_collection_name_by_study_id_and_collection_id(study_id, collection_id
                                                             study_id=study_id,
                                                             collection_id=collection_id,
                                                             collection_body=request_body)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/collections/<collection_id>', methods=['DELETE'])
@@ -424,7 +426,7 @@ def delete_collection_by_study_id_and_collection_id(study_id, collection_id):
                                                        access_token=request.headers['Authorization'],
                                                        study_id=study_id,
                                                        collection_id=collection_id)
-    return Response(json.dumps(collection_response), mimetype='application/json')
+    return Response(collection_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -444,7 +446,7 @@ def create_document(study_id):
                                                   access_token=request.headers['Authorization'],
                                                   study_id=study_id,
                                                   document_body=request_body)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents/<document_id>', methods=['GET'])
@@ -459,7 +461,7 @@ def get_document(study_id, document_id):
                                               access_token=request.headers['Authorization'],
                                               study_id=study_id,
                                               document_id=document_id)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents', methods=['GET'])
@@ -472,7 +474,7 @@ def get_all_documents(study_id):
     document_response = document.get_all_documents(env.BASE_URL[environment],
                                                    access_token=request.headers['Authorization'],
                                                    study_id=study_id)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents/sort/<sort>', methods=['GET'])
@@ -487,7 +489,7 @@ def get_all_documents_sorted(study_id, sort):
                                                           access_token=request.headers['Authorization'],
                                                           study_id=study_id,
                                                           sort=sort)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents?query=<query>', methods=['GET'])
@@ -502,7 +504,7 @@ def get_all_documents_by_query(study_id, query):
                                                          access_token=request.headers['Authorization'],
                                                          study_id=study_id,
                                                          query=query)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents/<document_id>', methods=['PUT'])
@@ -519,7 +521,7 @@ def update_documents(study_id, document_id):
                                                   study_id=study_id,
                                                   document_id=document_id,
                                                   document_body=request_body)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents/<document_id>/append', methods=['PUT'])
@@ -536,7 +538,7 @@ def append_documents(study_id, document_id):
                                                   study_id=study_id,
                                                   document_id=document_id,
                                                   document_body=request_body)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/documents/<document_id>', methods=['DELETE'])
@@ -551,7 +553,7 @@ def delete_documents(study_id, document_id):
                                                  access_token=request.headers['Authorization'],
                                                  study_id=study_id,
                                                  document_id=document_id)
-    return Response(json.dumps(document_response), mimetype='application/json')
+    return Response(document_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -573,7 +575,7 @@ def upload_file(study_id):
                                      file_to_upload=file_to_upload,
                                      study_id=study_id,
                                      meta_data=meta_data)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/files/<file_id>/download', methods=['GET'])
@@ -588,7 +590,7 @@ def download_file(study_id, file_id):
                                        access_token=request.headers['Authorization'],
                                        study_id=study_id,
                                        file_id=file_id)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/files/<file_id>', methods=['GET'])
@@ -603,7 +605,7 @@ def get_file(study_id, file_id):
                                   access_token=request.headers['Authorization'],
                                   study_id=study_id,
                                   file_id=file_id)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/files', methods=['GET'])
@@ -616,7 +618,7 @@ def get_all_files(study_id):
     file_response = file.get_all(env.BASE_URL[environment],
                                  access_token=request.headers['Authorization'],
                                  study_id=study_id)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/files/query/<meta_data_query>', methods=['GET'])
@@ -631,7 +633,7 @@ def get_files_by_meta_data(study_id, meta_data_query):
                                                 access_token=request.headers['Authorization'],
                                                 study_id=study_id,
                                                 query=meta_data_query)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/files/query/<query>', methods=['GET'])
@@ -646,7 +648,7 @@ def get_files_by_nested_query(study_id, query):
                                                 access_token=request.headers['Authorization'],
                                                 study_id=study_id,
                                                 query=query)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/files/<file_id>', methods=['DELETE'])
@@ -661,7 +663,7 @@ def delete_file(study_id, file_id):
                                      access_token=request.headers['Authorization'],
                                      study_id=study_id,
                                      file_id=file_id)
-    return Response(json.dumps(file_response), mimetype='application/json')
+    return Response(file_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -669,7 +671,7 @@ def delete_file(study_id, file_id):
 """""""""""""""
 
 
-@app.route('/client/api/protocol/protocol-service', methods=['POST'])
+@app.route('/client/api/protocol-service', methods=['POST'])
 def protocol_service():
     """
     Endpoint: [protocol_service]
@@ -679,10 +681,10 @@ def protocol_service():
     protocol_response = protocol.protocol_service(env.BASE_URL[environment],
                                                   access_token=request.headers['Authorization'],
                                                   protocol_body=request_body)
-    return Response(json.dumps(protocol_response), mimetype='application/json')
+    return Response(protocol_response, mimetype='application/json')
 
 
-@app.route('/client/api/protocol/protocol-factory-service', methods=['POST'])
+@app.route('/client/api/protocol-factory-service', methods=['POST'])
 def protocol_factory_service():
     """
     Endpoint: [protocol_factory_service]
@@ -692,7 +694,7 @@ def protocol_factory_service():
     protocol_response = protocol.protocol_factory_service(env.BASE_URL[environment],
                                                           access_token=request.headers['Authorization'],
                                                           protocol_body=request_body)
-    return Response(json.dumps(protocol_response), mimetype='application/json')
+    return Response(protocol_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -700,43 +702,43 @@ def protocol_factory_service():
 """""""""""""""
 
 
-@app.route('/client/api/deployments/deployment-service', methods=['POST'])
+@app.route('/client/api/deployment-service', methods=['POST'])
 def deployment_service():
     """
     Endpoint: [deployment_service]
     :return: The deployment response.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     deployment_response = deployment.deployment_service(env.BASE_URL[environment],
                                                         access_token=request.headers['Authorization'],
                                                         deployment_body=request_body)
-    return Response(json.dumps(deployment_response), mimetype='application/json')
+    return Response(deployment_response, mimetype='application/json')
 
 
-@app.route('/client/api/deployments/participation-service', methods=['POST'])
+@app.route('/client/api/participation-service', methods=['POST'])
 def deployment_participation():
     """
     Endpoint: [deployment_participation]
     :return: The deployment response.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     deployment_response = deployment.deployment_participation(env.BASE_URL[environment],
                                                               access_token=request.headers['Authorization'],
                                                               deployment_body=request_body)
-    return Response(json.dumps(deployment_response), mimetype='application/json')
+    return Response(deployment_response, mimetype='application/json')
 
 
-@app.route('/client/api/deployments/statistics', methods=['POST'])
+@app.route('/client/api/deployment-service/statistics', methods=['POST'])
 def deployment_statistics():
     """
     Endpoint: [deployment_statistics]
     :return: The deployment statistics response.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     deployment_response = deployment.deployment_statistics(env.BASE_URL[environment],
                                                            access_token=request.headers['Authorization'],
                                                            deployment_body=request_body)
-    return Response(json.dumps(deployment_response), mimetype='application/json')
+    return Response(deployment_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -751,38 +753,38 @@ def add_researcher(study_id):
     :param study_id: The [study_id] of the study.
     :return: The new added participant into study deployment by its [study_id].
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     study_response = study.add_researcher(env.BASE_URL[environment],
                                           access_token=request.headers['Authorization'],
                                           study_id=study_id,
                                           researcher_body=request_body)
-    return Response(json.dumps(study_response), mimetype='application/json')
+    return Response(study_response, mimetype='application/json')
 
 
-@app.route('/client/api/studies/study-service', methods=['POST'])
+@app.route('/client/api/study-service', methods=['POST'])
 def study_service():
     """
     Endpoint: [study_service]
     :return: The study service response according to its request.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     study_response = study.study_service(env.BASE_URL[environment],
                                          access_token=request.headers['Authorization'],
                                          study_body=request_body)
-    return Response(json.dumps(study_response), mimetype='application/json')
+    return Response(study_response, mimetype='application/json')
 
 
-@app.route('/client/api/studies/participant-service', methods=['POST'])
+@app.route('/client/api/participant-service', methods=['POST'])
 def participant_service():
     """
     Endpoint: [participant_service]
     :return: The participant service response according to its request.
     """
-    request_body = json.loads(json.dumps(request.get_json()))
+    request_body = json.loads(json.dumps(request.get_json()).encode("utf-8"))
     study_response = study.participant_service(env.BASE_URL[environment],
                                                access_token=request.headers['Authorization'],
                                                participant_body=request_body)
-    return Response(json.dumps(study_response), mimetype='application/json')
+    return Response(study_response, mimetype='application/json')
 
 
 @app.route('/client/api/studies/<study_id>/participants', methods=['GET'])
@@ -790,12 +792,25 @@ def get_participant_info(study_id):
     """
     Endpoint: [get_participant_info]
     :param study_id: The [study_id] assigned to the file to the study deployment.
-    :return: The files by their [study_id] and the [query] parameter(s).
+    :return: The participant information by their [study_id].
     """
     file_response = study.get_participants_info(env.BASE_URL[environment],
                                                 access_token=request.headers['Authorization'],
-                                                study_id=study_id)
-    return Response(json.dumps(file_response), mimetype='application/json')
+                                                study_id=study_id.encode("utf-8"))
+    return Response(file_response, mimetype='application/json')
+
+
+@app.route('/client/api/studies/<study_id>/researchers', methods=['GET'])
+def get_researchers(study_id):
+    """
+    Endpoint: [get_researchers]
+    :param study_id: The [study_id] assigned to the file to the study deployment.
+    :return: The researchers information by their [study_id].
+    """
+    file_response = study.get_researchers(env.BASE_URL[environment],
+                                          access_token=request.headers['Authorization'],
+                                          study_id=study_id.encode("utf-8"))
+    return Response(file_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -810,12 +825,12 @@ def create_consent(deployment_id):
     :param deployment_id: The [deployment_id] of the consent document.
     :return: The newly created consent document by its [deployment_id].
     """
-    request_body = json.loads(json.dumps(request.get_json()))
-    consent_response = consent.create_consent(env.BASE_URL[environment],
-                                              access_token=request.headers['Authorization'],
-                                              deployment_id=deployment_id,
-                                              consent_body=request_body)
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    request_body = json.loads(dumps(request.get_json()).encode("utf-8"))
+    consent_response = dumps(consent.create_consent(env.BASE_URL[environment],
+                                                    access_token=request.headers['Authorization'],
+                                                    deployment_id=deployment_id,
+                                                    consent_body=request_body)).encode("utf-8")
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/consent-documents/<consent_id>', methods=['GET'])
@@ -826,10 +841,12 @@ def get_consent_document(deployment_id, consent_id):
     :param consent_id: The [consent_id] of the consent document.
     :return: The consent document by its [deployment_id] and [consent_id].
     """
-    consent_response = consent.get_consent_document(env.BASE_URL[environment], access_token=request.headers['Authorization'],
-                                                    deployment_id=deployment_id,
-                                                    consent_id=consent_id)
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    consent_response = dumps(consent.get_consent_document(env.BASE_URL[environment],
+                                                          access_token=request.headers['Authorization'],
+                                                          deployment_id=deployment_id,
+                                                          consent_id=consent_id)).encode("utf-8")
+    print(consent_response)
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/consent-documents', methods=['GET'])
@@ -839,10 +856,10 @@ def get_all_consent_documents(deployment_id):
     :param deployment_id: The [deployment_id] of the deployment.
     :return: The consent documents by its [deployment_id].
     """
-    consent_response = consent.get_all_consent_documents(env.BASE_URL[environment],
-                                                         access_token=request.headers['Authorization'],
-                                                         deployment_id=deployment_id)
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    consent_response = dumps(consent.get_all_consent_documents(env.BASE_URL[environment],
+                                                               access_token=request.headers['Authorization'],
+                                                               deployment_id=deployment_id)).encode("utf-8")
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/deployments/<deployment_id>/consent-documents/<consent_id>', methods=['DELETE'])
@@ -857,7 +874,7 @@ def delete_consent_document(deployment_id, consent_id):
                                               access_token=request.headers['Authorization'],
                                               deployment_id=deployment_id,
                                               consent_id=consent_id)
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 """""""""""""""
@@ -928,7 +945,7 @@ def get_instance_info():
     """
     consent_response = monitor.get_monitor_info(env.BASE_URL[environment],
                                                 access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/git', methods=['GET'])
@@ -939,7 +956,7 @@ def get_git_info():
     """
     consent_response = monitor.get_git_info(env.BASE_URL[environment],
                                             access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/flyway', methods=['GET'])
@@ -950,7 +967,7 @@ def get_flyway_info():
     """
     consent_response = monitor.get_flyway_info(env.BASE_URL[environment],
                                                access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/health', methods=['GET'])
@@ -961,7 +978,7 @@ def get_health_info():
     """
     consent_response = monitor.get_health_info(env.BASE_URL[environment],
                                                access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/health/disk-space', methods=['GET'])
@@ -972,7 +989,7 @@ def get_disk_space_info():
     """
     consent_response = monitor.get_disk_space_info(env.BASE_URL[environment],
                                                    access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/health/db', methods=['GET'])
@@ -983,7 +1000,7 @@ def get_db_info():
     """
     consent_response = monitor.get_health_db_info(env.BASE_URL[environment],
                                                   access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/health/rabbitmq', methods=['GET'])
@@ -994,7 +1011,7 @@ def get_health_rabbitmq_info():
     """
     consent_response = monitor.get_health_rabbit_info(env.BASE_URL[environment],
                                                       access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/health/ping', methods=['GET'])
@@ -1005,7 +1022,7 @@ def get_health_ping_info():
     """
     consent_response = monitor.get_ping_info(env.BASE_URL[environment],
                                              access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')
 
 
 @app.route('/client/api/status/health/mail', methods=['GET'])
@@ -1016,4 +1033,4 @@ def get_mail_server_info():
     """
     consent_response = monitor.get_mail_server_info(env.BASE_URL[environment],
                                                     access_token=request.headers['Authorization'])
-    return Response(json.dumps(consent_response), mimetype='application/json')
+    return Response(consent_response, mimetype='application/json')

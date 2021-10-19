@@ -14,28 +14,17 @@ import unittest
 import requests
 
 from carp_main.resources import carp_environment as env
+from carp_tests.test_carp_setup import account_id, account_header_auth as header_auth, \
+    account_header_access_token as header_access_token, \
+    account_invite_researcher as invite_researcher
+from carp_tests.test_carp_setup import auth_refresh_token as refresh_token, \
+    auth_client_refresh_token_grant_type as client_refresh_token_grant_type, \
+    auth_client_password_grant_type as client_password_grant_type, \
+    auth_client_secret as client_secret, auth_client_researcher_username as client_researcher_username, \
+    auth_client_id as client_id, auth_access_token as access_token, auth_client_researcher_password as client_researcher_password, \
+    auth_client_researcher_new_password as client_researcher_new_password
 
 environment: str = 'local'
-# Auth
-client_id: str = 'carp'
-client_secret: str = 'carp'
-client_password_grant_type: str = 'password'
-client_refresh_token_grant_type: str = 'refresh_token'
-client_researcher_username: str = 'xxx@cachet.dk'
-client_researcher_password: str = 'xxx'
-client_researcher_new_password: str = 'xxx'
-access_token: str = 'xxx'
-refresh_token: str = 'xxx'
-# Account
-account_id: str = 'xxx'
-invite_researcher: str = 'xxx@dtu.dk'
-invite_carp_admin: str = 'xxx@dtu.dk'
-invite_carp_participant: str = 'xxx@dtu.dk'
-# Headers
-header_auth = {'Authorization': 'Basic Y2FycDpjYXJw', 'Accept': 'application/json','Content-Type': 'application/x-www-form-urlencoded'}
-header_access_token = {'Authorization': 'Bearer ' + access_token}
-header_access_token_nocache = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'Authorization': 'Bearer ' + access_token}
-
 
 """
 NOTE: To enable testing, add the prefix "test_" before the method (e.g. def test_login(self):).
@@ -46,15 +35,16 @@ class AuthTestCase(unittest.TestCase):
     """
     AUTH ENDPOINTS - UNITTESTS
     """
-    def login(self):
+
+    def test_login(self):
         url = ''.join([env.BASE_URL[environment], "/client/oauth/token"])
-        payload = 'client_id=' + client_id + \
-                  '&client_secret=' + client_secret + \
-                  '&grant_type=' + client_password_grant_type + \
-                  '&username=' + client_researcher_username + \
-                  '&password=' + client_researcher_password
+        payload = json.dumps('client_id=' + client_id + \
+                             '&client_secret=' + client_secret + \
+                             '&grant_type=' + client_password_grant_type + \
+                             '&username=' + client_researcher_username + \
+                             '&password=' + client_researcher_password).encode("utf-8")
         response = requests.request("POST", url, headers=header_auth, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: test_login(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def refresh_token(self):
@@ -64,21 +54,21 @@ class AuthTestCase(unittest.TestCase):
                   '&grant_type=' + client_refresh_token_grant_type + \
                   '&refresh_token=' + refresh_token
         response = requests.request("POST", url, headers=header_auth, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: refresh_token(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_current_user(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/users/current"])
         payload = {}
         response = requests.request("GET", url, headers=header_access_token, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: get_current_user(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
-    def get_studies_for_researcher(self):
+    def test_get_studies_for_researcher(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/accounts/", account_id, "/study-manager"])
         payload = {}
         response = requests.request("GET", url, headers=header_access_token, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: get_studies_for_researcher(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def register_user(self):
@@ -87,7 +77,7 @@ class AuthTestCase(unittest.TestCase):
             "emailAddress": invite_researcher
         })
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: register_user(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def send_forgotten_password(self):
@@ -97,7 +87,7 @@ class AuthTestCase(unittest.TestCase):
             "emailAddress": invite_researcher
         })
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: send_forgotten_password(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def change_password(self):
@@ -107,7 +97,7 @@ class AuthTestCase(unittest.TestCase):
             "newPassword": client_researcher_new_password
         })
         response = requests.request("PUT", url, headers=header_access_token, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: change_password(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def unlock_account(self):
@@ -116,7 +106,7 @@ class AuthTestCase(unittest.TestCase):
             "emailAddress": invite_researcher
         })
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'AUTH >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'AUTH >> URL: {url}, method: unlock_account(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
 

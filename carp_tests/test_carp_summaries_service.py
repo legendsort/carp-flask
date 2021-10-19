@@ -17,7 +17,6 @@ from carp_tests.test_carp_auth_service import header_access_token
 from carp_tests.test_carp_study_service import study_id
 
 # Summaries
-study_id: str = study_id
 summary_id: str = 'xxx'
 
 """
@@ -32,23 +31,23 @@ class SummariesTestCase(unittest.TestCase):
     def create_summaries(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/summaries?studyId=", study_id])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'SUMMARIES >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'SUMMARIES >> URL: {url}, method: create_summaries(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_summaries(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/summaries/all"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'SUMMARIES >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'SUMMARIES >> URL: {url}, method: status code: get_all_summaries(), {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_download_summaries(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/summaries/", summary_id, "/download"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'SUMMARIES >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'SUMMARIES >> URL: {url}, method: get_download_summaries(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_by_id_summaries(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/summaries/", summary_id, "/download"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'SUMMARIES >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'SUMMARIES >> URL: {url}, method: get_by_id_summaries(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)

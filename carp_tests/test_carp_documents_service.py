@@ -15,13 +15,8 @@ import requests
 from carp_main.resources import carp_environment as env
 from carp_tests.test_carp_auth_service import environment
 from carp_tests.test_carp_auth_service import header_access_token
-from carp_tests.test_carp_collection_service import collection_study_id
+from carp_tests.test_carp_setup import document_id, document_study_id, document_query, document_name, document_sort_created_at
 
-# Document
-document_study_id: str = collection_study_id
-document_id = '1'
-document_sort_created_at: str = '?sort=created_at,asc'
-document_query: str = '?query=name==test'
 
 """
 NOTE: To enable testing, add the prefix "test_" before the method (e.g. def test_create_document(self):).
@@ -57,41 +52,41 @@ class DocumentsTestCase(unittest.TestCase):
             }
         })
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: create_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_one_document(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents/", document_id])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: get_one_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_documents(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents"])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: get_all_documents(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_documents_sorted(self):
         url = ''.join([env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents",
                        document_sort_created_at])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: get_all_documents_sorted(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_documents_query(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents", document_query])
         response = requests.request("GET", url, headers=header_access_token, data={})
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: get_all_documents_query(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def update_overwrite_document(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents/", document_id])
         payload = json.dumps({
-            "name": "test",
+            "name": document_name,
             "data": {
                 "event": {
                     "id": 5000,
@@ -111,14 +106,14 @@ class DocumentsTestCase(unittest.TestCase):
             }
         })
         response = requests.request("PUT", url, headers=header_access_token, data=payload)
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: update_overwrite_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def update_append_document(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents/", document_id, "/append"])
         payload = json.dumps({
-            "name": "test",
+            "name": document_name,
             "data": {
                 "event": {
                     "id": 5000,
@@ -138,14 +133,14 @@ class DocumentsTestCase(unittest.TestCase):
             }
         })
         response = requests.request("PUT", url, headers=header_access_token, data=payload)
-        print(f'DOCUMENTS >> Method: {requests.put}, URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> Method: {requests.put}, URL: {url}, method: update_append_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
     def delete_document(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", document_study_id, "/documents/", document_id])
         response = requests.request("DELETE", url, headers=header_access_token, data={})
-        print(f'DOCUMENTS >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
+        print(f'DOCUMENTS >> URL: {url}, method: delete_document(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 
 

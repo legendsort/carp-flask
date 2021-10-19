@@ -1,12 +1,12 @@
 # CARP API
-carp-python-api==1.0.8
+carp-python-api==1.0.9
 # Flask Dependencies
 Flask~=2.0.2
 flask-restplus==0.13.0
-setuptools~=57.2.0
+setuptools==58.2.0
 requests==2.26.0
 api~=0.0.7
-pandas==1.3.3
+pandas==1.3.4
 certifi==2021.10.8
 chardet~=4.0.0
 idna==3.3
@@ -32,7 +32,7 @@ slack_sdk==3.11.2
 # Flask Test Dependencies
 keyring~=23.2.1
 docutils~=0.17.1
-Pillow~=8.3.2
+Pillow==8.4.0
 attrs~=21.2.0
 mock~=4.0.3
 nose~=1.3.7

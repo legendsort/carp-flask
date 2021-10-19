@@ -14,15 +14,9 @@ import requests
 
 from carp_main.resources import carp_environment as env
 from carp_tests.test_carp_auth_service import environment
-from carp_tests.test_carp_auth_service import header_access_token
-from carp_tests.test_carp_study_service import study_id
+from carp_tests.test_carp_setup import collection_document_name, collection_name, collection_id, collection_study_id,\
+    collection_query, account_header_access_token as header_access_token
 
-# Collection Document
-collection_study_id: str = study_id
-collection_name: str = 'xxx'
-document_name: str = 'xxx'
-collection_id = '1'
-collection_query: str = ''.join(['?query=', 'id==', collection_id])
 # Utils
 SLASH = '/'
 
@@ -36,7 +30,7 @@ class CollectionTestCase(unittest.TestCase):
        COLLECTION ENDPOINTS - UNITTESTS
     """
     def create_collection_document(self):
-        url = ''.join([env.BASE_URL[environment], "/client/api/studies/", collection_study_id, "/collections/", collection_name, document_name])
+        url = ''.join([env.BASE_URL[environment], "/client/api/studies/", collection_study_id, "/collections/", collection_name, collection_document_name])
         payload = json.dumps({
             "firstName": "Alban",
             "lastName": "Maxhuni",
@@ -51,7 +45,7 @@ class CollectionTestCase(unittest.TestCase):
     def create_nested_collection_document(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", collection_study_id, "/collections/", collection_name,
-             document_name])
+             collection_document_name])
         payload = json.dumps({
             "firstName": "Alban",
             "lastName": "Maxhuni",
@@ -73,7 +67,7 @@ class CollectionTestCase(unittest.TestCase):
     def test_get_one_collection(self):
         url = ''.join(
             [env.BASE_URL[environment], "/client/api/studies/", collection_study_id, "/collections/", collection_name,
-             SLASH, document_name])
+             SLASH, collection_document_name])
         response = requests.request("GET", url, headers=header_access_token, data={})
         print(f'COLLECTION >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
@@ -94,7 +88,7 @@ class CollectionTestCase(unittest.TestCase):
 
     def test_get_collection_by_collection_name_and_document_name(self):
         url = ''.join(
-            [env.BASE_URL[environment], "/client/api/studies/", collection_study_id, "/collections/", collection_name, SLASH, document_name])
+            [env.BASE_URL[environment], "/client/api/studies/", collection_study_id, "/collections/", collection_name, SLASH, collection_document_name])
         response = requests.request("GET", url, headers=header_access_token, data={})
         print(f'COLLECTION >> URL: {url}, status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)

@@ -204,7 +204,6 @@ class DeploymentTestCase(unittest.TestCase):
             "accountId": account_id
         }).encode("utf-8")
         response = requests.request("POST", url, headers=header_access_token, data=payload)
-        print(response.text)
         print(f'DEPLOYMENT >> URL: {url}, method: get_active_participation_invitations(), status code: {response.status_code}, and the response body: {response.text}')
         self.assertEqual(response.status_code, 200)
 

@@ -6,10 +6,10 @@ auth_client_secret: str = 'carp'
 auth_client_password_grant_type: str = 'password'
 auth_client_refresh_token_grant_type: str = 'refresh_token'
 auth_client_researcher_username: str = 'ossi0004@gmail.com'
-auth_client_researcher_password: str = 'xxx'
-auth_client_researcher_new_password: str = 'xxx'
-auth_access_token: str = 'xxx'
-auth_refresh_token: str = 'xxx'
+auth_client_researcher_password: str = 'xxxx'
+auth_client_researcher_new_password: str = 'xxxx'
+auth_access_token: str = 'c877be77-8060-430f-b566-xxxx'
+auth_refresh_token: str = 'b83dbfaa-8250-4d87-91d0-xxxx'
 
 """"
 Account
